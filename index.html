@@ -849,10 +849,10 @@
       <div>
         <p class="eyebrow">Come partecipare</p>
         <h2>Posti limitati, poche regole semplici.</h2>
-        <p class="lead">Si entra su invito o su candidatura. Compila il modulo: ti ricontattiamo noi per confermare il tuo posto.</p>
+        <p class="lead">Si entra su invito o su candidatura. Compila il modulo: ricevi subito via email la conferma del tuo posto.</p>
         <ol class="howto">
           <li><b>01</b><div><strong>Le iscrizioni aprono</strong><span>Tre settimane prima di ogni incontro.</span></div></li>
-          <li><b>02</b><div><strong>Ricevi la conferma</strong><span>Ti ricontattiamo noi. I posti sono limitati: vale l'ordine di iscrizione.</span></div></li>
+          <li><b>02</b><div><strong>Ricevi la conferma</strong><span>Arriva subito via email, con tutti i dettagli. I posti sono limitati: vale l'ordine di iscrizione.</span></div></li>
           <li><b>03</b><div><strong>Arrivi a Villa Costanza</strong><span>Hotel &amp; Gourmet Restaurant, Pontenure. Accoglienza alle 16:00, formazione dalle 16:30.</span></div></li>
           <li><b>04</b><div><strong>Resti per l'aperitivo</strong><span>Networking libero con gli altri imprenditori del Club.</span></div></li>
         </ol>
@@ -895,7 +895,7 @@
         <input class="hp" type="text" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label class="check"><input type="checkbox" id="privacy" required><span>Ho letto l'<a href="#" data-privacy>informativa privacy</a> e acconsento al trattamento dei miei dati per essere ricontattato sulle iniziative di OSM Business Club Piacenza.</span></label>
         <button class="btn btn-dark" type="submit" id="send">Invia la richiesta</button>
-        <p class="note">Ti ricontattiamo a breve per confermare.</p>
+        <p class="note">Ricevi subito la conferma via email.</p>
       </form>
     </div>
   </section>
@@ -906,12 +906,13 @@
       <div>
         <p class="eyebrow">Contatti</p>
         <h2>Restiamo in contatto.</h2>
-        <p class="lead">Per informazioni sul Club, sugli incontri o per candidare la tua azienda, compila il modulo qui sopra: ti ricontattiamo noi.</p>
+        <p class="lead">Per informazioni sul Club, sugli incontri o per candidare la tua azienda, compila il modulo qui sopra o scrivici a info@osmbusinessclubpiacenza.it.</p>
       </div>
       <ul class="clist">
         <!-- Telefono, email e social di Piacenza da aggiungere quando disponibili (stesso formato di Bologna).
              NON usare i profili social di Bologna. -->
         <li><small>Dove ci incontriamo</small><a href="https://www.google.com/maps/search/?api=1&amp;query=Villa%20Costanza%20Hotel%20%26%20Gourmet%20Restaurant%2C%20Strada%20Ponteriglio%2027%2C%20Pontenure" target="_blank" rel="noopener">Villa Costanza Hotel &amp; Gourmet Restaurant<br>Strada Ponteriglio 27, 29010 Pontenure (PC)</a></li>
+        <li><small>Email</small><a href="mailto:info@osmbusinessclubpiacenza.it">info@osmbusinessclubpiacenza.it</a></li>
         <li><small>Iscrizioni e informazioni</small><a href="#iscriviti">Richiedi il tuo posto</a></li>
       </ul>
     </div>
@@ -937,7 +938,7 @@
   <h3 id="privacy-title">Informativa privacy sintetica</h3>
   <!-- TESTO DA FAR VERIFICARE: sostituire con l'informativa completa di COSMO S.R.L. (sede legale, contatti del titolare del trattamento) -->
   <p>I dati inseriti nel modulo (nome, cognome, azienda, ruolo, numero di collaboratori, telefono, email ed eventuale messaggio) sono trattati da COSMO S.R.L. al solo scopo di gestire la tua richiesta di partecipazione e ricontattarti sulle iniziative di OSM Business Club Piacenza.</p>
-  <p>Per l'invio, il modulo utilizza il servizio esterno Web3Forms, che inoltra i dati via email al Club. I dati non vengono ceduti a terzi per finalità commerciali. Puoi chiederne in qualsiasi momento l'accesso, la modifica o la cancellazione rispondendo alla mail con cui ti ricontattiamo.</p>
+  <p>Per l'invio, il modulo utilizza i servizi Google del Club, che registrano la richiesta in un archivio interno e ti inviano la mail di conferma, e come riserva il servizio esterno Web3Forms, che inoltra i dati via email al Club. I dati non vengono ceduti a terzi per finalità commerciali. Puoi chiederne in qualsiasi momento l'accesso, la modifica o la cancellazione scrivendo a <a href="mailto:info@osmbusinessclubpiacenza.it">info@osmbusinessclubpiacenza.it</a>.</p>
   <form method="dialog"><button class="btn btn-dark" style="margin-top:12px">Chiudi</button></form>
 </dialog>
 
@@ -1025,10 +1026,12 @@ var CLUB = [
    ===================================================================== */
 var WEB3FORMS_KEY = 'a3fa3367-8427-4e0c-8e6a-5fdefbdc670d';
 
-/* MAIL DI CONFERMA alla persona che si iscrive + elenco iscritti nel Foglio Google.
-   Vuoto di proposito: lo script di Bologna manda mail con sede e dati di Bologna.
-   Da attivare solo con uno script dedicato a Piacenza. */
-var CONFERMA_URL = '';
+/* MAIL DI CONFERMA alla persona + segnalazione a info@osmbusinessclubpiacenza.it + riga nel
+   Foglio Google "Iscrizioni OSM Business Club Piacenza". Script DEDICATO a Piacenza
+   (sorgente: 2026-11-26_apps-script-conferma-iscrizioni-piacenza.gs), NON quello di Bologna.
+   Incollare qui l'indirizzo dell'app web (finisce con /exec). Finché è vuoto le richieste
+   arrivano solo via Web3Forms a l.gorgo@ e la persona non riceve mail. */
+var CONFERMA_URL = 'https://script.google.com/macros/s/AKfycbxTXXNCEWWhwRcVAWuicHDmNIpHUtTITUaobsryp8ybRVGa0yPUjHEybIxqbgTcjTvmJA/exec';
 
 var MESI = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 var MESI_BREVI = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
@@ -1200,16 +1203,35 @@ function datiPerConferma(dati, selEvento) {
   return out;
 }
 
-/* Invio allo script Google che manda la mail e salva l'iscritto nel foglio.
-   Non blocca nulla: se fallisce, la richiesta è comunque già arrivata via email. */
-function inviaConferma(dati) {
-  if (!CONFERMA_URL) return;
-  fetch(CONFERMA_URL, {
+/* Invio allo script Google di Piacenza: manda la mail di conferma alla persona,
+   la segnalazione a info@osmbusinessclubpiacenza.it e scrive l'iscritto nel foglio.
+   Se lo script non risponde, la richiesta parte comunque con Web3Forms (riserva). */
+function inviaAlloScript(dati) {
+  dati.sede = 'piacenza';
+  return fetch(CONFERMA_URL, {
     method: 'POST',
-    mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(dati)
-  }).catch(function () {});
+  }).then(function (r) { return r.json(); }).then(function (r) {
+    if (!r.ok) throw new Error(r.messaggio || 'invio non riuscito');
+    return 'script';
+  });
+}
+function inviaConWeb3Forms(dati) {
+  var d = {};
+  Object.keys(dati).forEach(function (k) { if (!/^ev|^sede$/.test(k)) d[k] = dati[k]; });
+  d.access_key = WEB3FORMS_KEY;
+  d.subject = 'Nuova richiesta OSM Business Club PIACENZA — ' + d.Evento;
+  d.from_name = 'Sito OSM Business Club Piacenza';
+  if (!WEB3FORMS_KEY) return Promise.reject(new Error('chiave Web3Forms mancante'));
+  return fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(d)
+  }).then(function (r) { return r.json(); }).then(function (r) {
+    if (String(r.success) !== 'true') throw new Error(r.message || 'invio non riuscito');
+    return 'web3forms';
+  });
 }
 
 document.getElementById('form').addEventListener('submit', function (ev) {
@@ -1233,22 +1255,22 @@ document.getElementById('form').addEventListener('submit', function (ev) {
   delete dati.botcheck;
   if (!dati.Consulente) dati.Consulente = 'Non indicato';
   var perConferma = datiPerConferma(dati, document.getElementById('evento'));
-  dati.access_key = WEB3FORMS_KEY;
-  dati.subject = 'Nuova richiesta OSM Business Club PIACENZA — ' + dati.Evento;
-  dati.from_name = 'Sito OSM Business Club Piacenza';
   btn.disabled = true; btn.textContent = 'Invio in corso…';
-  (WEB3FORMS_KEY ? fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(dati)
-  }) : Promise.reject(new Error('chiave Web3Forms mancante'))).then(function (r) { return r.json(); }).then(function (r) {
-    if (String(r.success) !== 'true') throw new Error(r.message || 'invio non riuscito');
-    inviaConferma(perConferma);
+  var invio = CONFERMA_URL
+    ? inviaAlloScript(perConferma).catch(function () { return inviaConWeb3Forms(perConferma); })
+    : inviaConWeb3Forms(perConferma);
+  invio.then(function (canale) {
     f.reset(); renderSelect();
     msg.className = 'msg ok';
-    msg.textContent = !perConferma.evNome
-      ? 'Grazie! Ti avviseremo appena si aprono le iscrizioni ai prossimi incontri.'
-      : 'Grazie! Abbiamo ricevuto la tua richiesta: ti ricontattiamo a breve per confermare il tuo posto.';
+    if (canale === 'script') {
+      msg.textContent = !perConferma.evNome
+        ? 'Grazie! Ti abbiamo inviato una mail: ti avviseremo appena si aprono le iscrizioni ai prossimi incontri.'
+        : 'Grazie! La tua iscrizione è confermata: ti abbiamo inviato una mail con tutti i dettagli (controlla anche nello spam).';
+    } else {
+      msg.textContent = !perConferma.evNome
+        ? 'Grazie! Ti avviseremo appena si aprono le iscrizioni ai prossimi incontri.'
+        : 'Grazie! Abbiamo ricevuto la tua richiesta: ti ricontattiamo a breve per confermare il tuo posto.';
+    }
   }).catch(function () {
     msg.className = 'msg err';
     msg.textContent = 'Non siamo riusciti a inviare la richiesta. Controlla la connessione e riprova tra qualche minuto.';

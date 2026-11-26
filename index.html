@@ -271,6 +271,25 @@
   .empty { margin-top: 48px; padding: 48px; border: 1px solid var(--line); background: var(--white); text-align: center; }
   .empty h3 { margin-bottom: 10px; }
   .empty p { margin: 0 0 22px; color: var(--muted); }
+  /* vista a mesi: fila dei mesi + incontri del mese scelto */
+  .mbar { display: flex; align-items: stretch; gap: 8px; margin-top: 44px; max-width: 100%; min-width: 0; }
+  .mchips { display: flex; gap: 8px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; scroll-behavior: smooth; padding: 2px; }
+  .mchips::-webkit-scrollbar { display: none; }
+  .mchip { flex: 0 0 auto; min-width: 104px; min-height: 60px; padding: 10px 14px; border: 1px solid var(--line); background: var(--white); color: var(--text); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font: inherit; transition: background .25s, border-color .25s, color .25s; }
+  .mchip b { font: 600 15px var(--sans); white-space: nowrap; }
+  .mchip small { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .mchip:hover:not(:disabled) { border-color: var(--navy); }
+  .mchip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--ivory); }
+  .mchip[aria-pressed="true"] small { color: rgba(246, 241, 231, .75); }
+  .mchip:disabled { opacity: .45; cursor: default; }
+  .mnav { flex: 0 0 auto; width: 48px; border: 1px solid var(--line); background: var(--white); color: var(--navy); font-size: 26px; line-height: 1; cursor: pointer; }
+  .mnav:hover:not(:disabled) { background: var(--navy); color: var(--ivory); }
+  .mnav:disabled { opacity: .35; cursor: default; }
+  .mbar + .agenda { margin-top: 36px; }
+  .ag-title.tbd { font-style: italic; font-weight: 500; color: var(--muted); }
+  .ag-row.soon .ag-go.inv { font-style: normal; font-size: 14px; }
+  .cal-note { margin: 28px 0 0; font-size: 14.5px; color: var(--muted); }
+  @media (max-width: 720px) { .mnav { display: none; } .mchip { min-width: 92px; } }
 
   /* ---------- chi incontri ---------- */
   .meet { background: var(--white); }
@@ -310,7 +329,8 @@
 
   /* ---------- il team ---------- */
   .team { background: var(--white); }
-  .tgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 56px; max-width: 900px; }
+  .tgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 56px; max-width: 900px; align-items: start; }
+  .tphoto img { object-position: center 18%; }
   .tcard { border: 1px solid var(--line); background: var(--ivory); display: flex; flex-direction: column; }
   .tphoto { aspect-ratio: 4 / 5; background: var(--navy); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
   .tphoto img { width: 100%; height: 100%; object-fit: cover; }
@@ -680,7 +700,7 @@
             </svg>
           </div>
           <div class="fbody">
-            <span class="freq">2 volte al mese · In sede</span>
+            <span class="freq">2 volte al mese · Villa Costanza</span>
             <h3>Business Day</h3>
             <p>Due ore di formazione su un tema concreto, con casi reali e uno strumento applicabile. Poi aperitivo e networking con gli altri imprenditori.</p>
             <div class="rows"><div><span>Accoglienza</span><span>16:00</span></div><div><span>Formazione</span><span>16:30 – 18:30</span></div><div><span>Aperitivo e networking</span><span>18:30</span></div></div>
@@ -772,6 +792,7 @@
           <button type="button" data-f="tutti" aria-pressed="true">Tutti</button>
           <button type="button" data-f="day" aria-pressed="false">Business Day</button>
           <button type="button" data-f="webinar" aria-pressed="false">Webinar</button>
+          <button type="button" data-f="show" aria-pressed="false">Business Show</button>
         </div>
       </div>
       <div id="cal"></div>
@@ -832,7 +853,7 @@
         <ol class="howto">
           <li><b>01</b><div><strong>Le iscrizioni aprono</strong><span>Tre settimane prima di ogni incontro.</span></div></li>
           <li><b>02</b><div><strong>Ricevi la conferma</strong><span>Ti ricontattiamo noi. I posti sono limitati: vale l'ordine di iscrizione.</span></div></li>
-          <li><b>03</b><div><strong>Arrivi in sede</strong><span>Accoglienza alle 16:00, formazione dalle 16:30.</span></div></li>
+          <li><b>03</b><div><strong>Arrivi a Villa Costanza</strong><span>Hotel &amp; Gourmet Restaurant, Pontenure. Accoglienza alle 16:00, formazione dalle 16:30.</span></div></li>
           <li><b>04</b><div><strong>Resti per l'aperitivo</strong><span>Networking libero con gli altri imprenditori del Club.</span></div></li>
         </ol>
       </div>
@@ -867,7 +888,6 @@
           <select id="consulente" name="Consulente">
             <option value="">Seleziona</option>
             <option>Perino Francesco</option>
-            <option>Ubiali Dino</option>
             <option>Boeri Marco</option>
           </select>
         </div>
@@ -891,6 +911,7 @@
       <ul class="clist">
         <!-- Telefono, email e social di Piacenza da aggiungere quando disponibili (stesso formato di Bologna).
              NON usare i profili social di Bologna. -->
+        <li><small>Dove ci incontriamo</small><a href="https://www.google.com/maps/search/?api=1&amp;query=Villa%20Costanza%20Hotel%20%26%20Gourmet%20Restaurant%2C%20Strada%20Ponteriglio%2027%2C%20Pontenure" target="_blank" rel="noopener">Villa Costanza Hotel &amp; Gourmet Restaurant<br>Strada Ponteriglio 27, 29010 Pontenure (PC)</a></li>
         <li><small>Iscrizioni e informazioni</small><a href="#iscriviti">Richiedi il tuo posto</a></li>
       </ul>
     </div>
@@ -923,14 +944,48 @@
 <script>
 /* =====================================================================
    CALENDARIO — per aggiornarlo modifica solo questa lista.
-   data: AAAA-MM-GG · formato: "day" | "webinar" | "dinner"
+   data: AAAA-MM-GG · formato: "day" (evento in presenza) | "webinar" | "show" (Business Show, cena) | "dinner"
    nome: come appare (es. "Business Monday") · tema: tema del mese
+   titolo: il titolo dell'incontro (se vuoto compare "Tema in arrivo")
+   dove: facoltativo, sostituisce luogo e orario standard (vedi DOVE più sotto)
+   Le iscrizioni si aprono da sole 3 settimane prima di ogni incontro (APERTURA_GIORNI).
    Gli incontri passati spariscono da soli dal sito.
-   Finché la lista è vuota la sezione Calendario (e la sua voce nel menu) resta nascosta;
-   con la prima data compare da sola. Esempio di riga:
-   { data: '2027-01-20', formato: 'day', nome: 'Business Wednesday', tema: 'Persone', titolo: 'Titolo dell'incontro.' },
    ===================================================================== */
 var EVENTI = [
+  { data: '2027-01-11', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-01-19', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-01-25', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-02-01', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-02-08', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-02-11', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-02-22', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-03-01', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-03-05', formato: 'show',    nome: 'Business Show',   tema: '', titolo: '', dove: 'Cena · Luogo e dettagli in arrivo' },
+  { data: '2027-03-08', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-03-16', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-03-22', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-03-29', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-04-05', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-04-12', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-04-26', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-05-03', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-05-10', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-05-14', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-05-24', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-05-31', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-06-04', formato: 'show',    nome: 'Business Show',   tema: '', titolo: '', dove: 'Cena · Luogo e dettagli in arrivo' },
+  { data: '2027-06-07', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-06-14', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-06-28', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-07-05', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-07-12', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-07-16', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-07-26', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-08-02', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-08-09', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-08-13', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' },
+  { data: '2027-08-23', formato: 'day',     nome: 'Business Monday', tema: '', titolo: '' },
+  { data: '2027-08-30', formato: 'webinar', nome: 'Webinar',         tema: '', titolo: '' }
 ];
 
 /* =====================================================================
@@ -941,10 +996,12 @@ var EVENTI = [
          se vuoto compaiono le iniziali. Formato consigliato: verticale 4:5, almeno 800x1000 px.
    ===================================================================== */
 /* Più ruoli nella stessa riga: separarli con " · " (compaiono uno sotto l'altro) */
-/* Ruoli e presentazioni da completare quando arrivano: per ora compare "Presentazione in arrivo." */
+/* Più paragrafi nella descrizione: separarli con una riga vuota (\n\n) */
 var TEAM = [
-  { nome: 'Francesco Perino', ruolo: 'OSM Partner Piacenza', foto: '', descrizione: '' },
-  { nome: 'Dino Ubiali',      ruolo: 'OSM Partner Piacenza', foto: '', descrizione: '' },
+  { nome: 'Francesco Perino', ruolo: 'Founder OSM Partner Piacenza · Responsabile OSM Business Club Piacenza · Senior Business Analyst – I-Profile Analyst', foto: 'team-francesco-perino.jpg',
+    descrizione: "Ingegnere gestionale e imprenditore, unisce il rigore dell'analisi dei numeri alla profonda convinzione che siano le persone a fare la differenza nei risultati di ogni impresa.\n\n" +
+                 "Guida OSM Partner Piacenza e affianca gli imprenditori nella costruzione di aziende solide, organizzate, redditizie e capaci di crescere nel tempo. Il suo lavoro si concentra su tre leve fondamentali: la valorizzazione delle persone, l'efficacia dell'organizzazione aziendale e la consapevolezza economico-finanziaria.\n\n" +
+                 "Promuove OSM Business Club Piacenza con la volontà di creare una comunità di imprenditori accomunati dal desiderio di migliorarsi, condividere esperienze, acquisire nuove competenze e costruire insieme nuove opportunità di crescita." },
   { nome: 'Marco Boeri',      ruolo: 'OSM Partner Piacenza', foto: '', descrizione: '' }
 ];
 
@@ -955,7 +1012,7 @@ var TEAM = [
    sito: indirizzo del sito di quel Club · qui: true solo per il Club di questo sito
    ===================================================================== */
 var CLUB = [
-  { citta: 'Piacenza', nome: 'OSM Business Club Piacenza', indirizzo: 'Territorio di Piacenza',                                      lat: 45.052600, lng: 9.693000,  maps: 'Piacenza',
+  { citta: 'Piacenza', nome: 'OSM Business Club Piacenza', indirizzo: 'Villa Costanza Hotel & Gourmet Restaurant · Strada Ponteriglio 27, 29010 Pontenure (PC)', lat: 45.000600, lng: 9.788900, maps: 'Villa Costanza Hotel & Gourmet Restaurant, Strada Ponteriglio 27, Pontenure',
     sito: 'https://osm-business-club.github.io/osm-business-club-piacenza/', qui: true },
   { citta: 'Bologna',  nome: 'OSM Business Club Bologna',  indirizzo: 'Via Persicetana Vecchia 24, 40132 Bologna (Borgo Panigale)', lat: 44.528072, lng: 11.273984, maps: 'Via Persicetana Vecchia 24, 40132 Bologna',
     sito: 'https://osm-business-club.github.io/osm-business-club-bologna/' }
@@ -977,17 +1034,34 @@ var MESI = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Ag
 var MESI_BREVI = ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 var GIORNI = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
 var GIORNI_LUNGHI = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
-var DOVE = { day: 'In sede · 16:30–18:30', webinar: 'Online · 18:30–19:30', dinner: 'Solo su invito personale' };
-var MOSTRATI = 6;   // schede visibili prima di "Vedi tutti"
+var DOVE = { day: 'Villa Costanza · 16:30–18:30', webinar: 'Online · 18:30–19:30', dinner: 'Solo su invito personale', show: 'Cena · Dettagli in arrivo' };
+var APERTURA_GIORNI = 21;   // le iscrizioni a un incontro si aprono 3 settimane prima
 
+//@@CALENDARIO-INIZIO (vista a mesi: stesso codice nei siti di Bologna e Piacenza)
 function parseData(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
 function oggi() { var d = new Date(); d.setHours(0, 0, 0, 0); return d; }
 function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-function etichetta(e) { var d = parseData(e.data); return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].toLowerCase() + ' · ' + e.nome + ' · ' + e.titolo; }
+function titoloDi(e) { return e.titolo || 'Tema in arrivo'; }
+function luogoDi(e) { return e.dove || DOVE[e.formato]; }
+function etichetta(e) { var d = parseData(e.data); return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].toLowerCase() + ' · ' + e.nome + ' · ' + titoloDi(e); }
+function dataApertura(e) { var d = parseData(e.data); d.setDate(d.getDate() - APERTURA_GIORNI); return d; }
+function iscrivibile(e) { return (e.formato === 'day' || e.formato === 'webinar') && dataApertura(e) <= oggi(); }
+function dataBreve(d) { return d.getDate() + ' ' + MESI_BREVI[d.getMonth()].toLowerCase(); }
+function chiaveMese(d) { return d.getFullYear() + '-' + d.getMonth(); }
 
 var futuri = EVENTI.filter(function (e) { return parseData(e.data) >= oggi(); })
                    .sort(function (a, b) { return parseData(a.data) - parseData(b.data); });
-var filtroAttivo = 'tutti', mostraTutti = false;
+var filtroAttivo = 'tutti', meseScelto = null;
+
+/* elenco continuo dei mesi dal primo all'ultimo incontro in programma */
+function mesiCalendario() {
+  if (!futuri.length) return [];
+  var a = parseData(futuri[0].data), b = parseData(futuri[futuri.length - 1].data);
+  var out = [], d = new Date(a.getFullYear(), a.getMonth(), 1);
+  while (d <= b) { out.push({ k: chiaveMese(d), m: d.getMonth(), y: d.getFullYear() }); d = new Date(d.getFullYear(), d.getMonth() + 1, 1); }
+  return out;
+}
+function delFiltro() { return futuri.filter(function (e) { return filtroAttivo === 'tutti' || e.formato === filtroAttivo; }); }
 
 function renderRange() {
   var el = document.getElementById('cal-range');
@@ -998,62 +1072,78 @@ function renderRange() {
     : MESI[a.getMonth()] + (a.getFullYear() !== b.getFullYear() ? ' ' + a.getFullYear() : '') + ' – ' + MESI[b.getMonth()] + ' ' + b.getFullYear());
 }
 
+function rigaIncontro(e, i) {
+  var d = parseData(e.data), apri, chiudi = '</a>', azione;
+  if (e.formato === 'dinner') { apri = '<div class="ag-row"'; chiudi = '</div>'; azione = '<span class="ag-go inv">Su invito</span>'; }
+  else if (e.formato === 'show' && e.pagina) { apri = '<a class="ag-row" href="' + esc(e.pagina) + '"'; azione = '<span class="ag-go">Scopri e iscriviti</span>'; }
+  else if (e.formato === 'show') { apri = '<div class="ag-row"'; chiudi = '</div>'; azione = '<span class="ag-go inv">Dettagli in arrivo</span>'; }
+  else if (iscrivibile(e)) { apri = '<a class="ag-row" href="#iscriviti" data-iscrivi="' + esc(e.data) + '"'; azione = '<span class="ag-go">Iscriviti</span>'; }
+  else { apri = '<a class="ag-row soon" href="#iscriviti" data-avvisami="1"'; azione = '<span class="ag-go inv">Iscrizioni dal ' + dataBreve(dataApertura(e)) + '</span>'; }
+  return apri + ' style="animation-delay:' + Math.min(i * .06, .5) + 's">' +
+    '<div class="ag-date"><b>' + String(d.getDate()).padStart(2, '0') + '</b><span>' + GIORNI[d.getDay()] + '</span></div>' +
+    '<div class="ag-main"><span class="ag-kind ' + e.formato + '"><i></i><strong>' + esc(e.nome) + '</strong>' + esc(luogoDi(e)) + '</span>' +
+    '<span class="ag-title' + (e.titolo ? '' : ' tbd') + '">' + esc(titoloDi(e)) + '</span></div>' + azione + chiudi;
+}
+
 function renderCal() {
-  var lista = futuri.filter(function (e) { return filtroAttivo === 'tutti' || e.formato === filtroAttivo; });
   var box = document.getElementById('cal');
+  var lista = delFiltro(), mesi = mesiCalendario();
   if (!lista.length) {
-    box.innerHTML = '<div class="empty"><h3>Nuove date in arrivo</h3><p>Stiamo definendo i prossimi incontri. Lasciaci i tuoi contatti e ti avvisiamo appena si aprono le iscrizioni.</p><a class="btn btn-outline" href="#iscriviti">Avvisami</a></div>';
+    box.innerHTML = '<div class="empty"><h3>Nuove date in arrivo</h3><p>Stiamo definendo i prossimi incontri. Lasciaci i tuoi contatti e ti avvisiamo appena si aprono le iscrizioni.</p><a class="btn btn-outline" href="#iscriviti" data-avvisami="1">Avvisami</a></div>';
     return;
   }
-  var visibili = mostraTutti ? lista : lista.slice(0, MOSTRATI);
-  var html = '<div class="agenda">', meseCorrente = '';
-  visibili.forEach(function (e, i) {
-    var d = parseData(e.data), mese = MESI[d.getMonth()] + ' ' + d.getFullYear();
-    if (mese !== meseCorrente) { html += '<h3 class="ag-month">' + mese + '</h3>'; meseCorrente = mese; }
-    var apri, chiudi = '</a>', azione;
-    if (e.formato === 'dinner') { apri = '<div class="ag-row"'; chiudi = '</div>'; azione = '<span class="ag-go inv">Su invito</span>'; }
-    else { apri = '<a class="ag-row" href="#iscriviti" data-iscrivi="' + esc(e.data) + '"'; azione = '<span class="ag-go">Iscriviti</span>'; }
-    html += apri + ' style="animation-delay:' + Math.min(i * .06, .5) + 's">' +
-      '<div class="ag-date"><b>' + String(d.getDate()).padStart(2, '0') + '</b><span>' + GIORNI[d.getDay()] + '</span></div>' +
-      '<div class="ag-main"><span class="ag-kind ' + e.formato + '"><i></i><strong>' + esc(e.nome) + '</strong>' + DOVE[e.formato] + '</span>' +
-      '<span class="ag-title">' + esc(e.titolo) + '</span></div>' + azione + chiudi;
+  var conta = {};
+  lista.forEach(function (e) { var k = chiaveMese(parseData(e.data)); conta[k] = (conta[k] || 0) + 1; });
+  // mese mostrato: quello scelto se ha incontri, altrimenti il primo con incontri
+  if (!meseScelto || !conta[meseScelto]) meseScelto = chiaveMese(parseData(lista[0].data));
+  var idx = 0; mesi.forEach(function (m, i) { if (m.k === meseScelto) idx = i; });
+  var prec = null, succ = null;
+  for (var i = idx - 1; i >= 0; i--) { if (conta[mesi[i].k]) { prec = mesi[i].k; break; } }
+  for (var j = idx + 1; j < mesi.length; j++) { if (conta[mesi[j].k]) { succ = mesi[j].k; break; } }
+
+  var html = '<div class="mbar"><button type="button" class="mnav" data-mese="' + (prec || '') + '" aria-label="Mese precedente"' + (prec ? '' : ' disabled') + '>‹</button>' +
+    '<div class="mchips" role="group" aria-label="Scegli il mese">';
+  mesi.forEach(function (m) {
+    var n = conta[m.k] || 0;
+    html += '<button type="button" class="mchip" data-mese="' + m.k + '" aria-pressed="' + (m.k === meseScelto) + '"' + (n ? '' : ' disabled') + '>' +
+      '<b>' + MESI_BREVI[m.m] + ' ' + m.y + '</b><small>' + (n ? n + (n === 1 ? ' incontro' : ' incontri') : '—') + '</small></button>';
   });
-  html += '</div>';
-  if (lista.length > MOSTRATI) {
-    html += '<div class="cal-more"><button type="button" class="btn btn-outline" id="more">' +
-      (mostraTutti ? 'Mostra meno' : 'Vedi tutti i ' + lista.length + ' incontri') + '</button></div>';
-  }
+  html += '</div><button type="button" class="mnav" data-mese="' + (succ || '') + '" aria-label="Mese successivo"' + (succ ? '' : ' disabled') + '>›</button></div>';
+
+  var delMese = lista.filter(function (e) { return chiaveMese(parseData(e.data)) === meseScelto; });
+  var m0 = mesi[idx];
+  html += '<div class="agenda"><h3 class="ag-month">' + MESI[m0.m] + ' ' + m0.y + '</h3>' + delMese.map(rigaIncontro).join('') + '</div>';
+  html += '<p class="cal-note">Le iscrizioni a ogni incontro si aprono tre settimane prima. Le tematiche vengono pubblicate man mano.</p>';
   box.innerHTML = html;
-  var more = document.getElementById('more');
-  if (more) more.addEventListener('click', function () {
-    mostraTutti = !mostraTutti; renderCal();
-    if (!mostraTutti) document.getElementById('calendario').scrollIntoView();
-  });
+  var sel = box.querySelector('.mchip[aria-pressed="true"]');
+  if (sel) { var c = box.querySelector('.mchips'); c.scrollLeft = sel.offsetLeft - c.offsetLeft - (c.clientWidth - sel.offsetWidth) / 2; }
 }
 
 function renderNext() {
   var el = document.getElementById('next');
-  var n = futuri.filter(function (e) { return e.formato !== 'dinner' && e.formato !== 'show'; })[0];
+  var n = futuri.filter(function (e) { return e.formato === 'day' || e.formato === 'webinar'; })[0];
   if (!n) {
     el.innerHTML = '<div class="when"><span class="lbl">Prossimo incontro</span></div>' +
       '<div class="what"><p class="empty-t">Le nuove date sono in arrivo. Lasciaci i tuoi contatti: ti avvisiamo appena si aprono le iscrizioni.</p></div>' +
-      '<a class="btn btn-dark" href="#iscriviti">Avvisami</a>';
+      '<a class="btn btn-dark" href="#iscriviti" data-avvisami="1">Avvisami</a>';
     return;
   }
-  var d = parseData(n.data);
+  var d = parseData(n.data), aperto = iscrivibile(n);
   el.innerHTML = '<div class="when"><span class="lbl">Prossimo incontro</span>' +
-    '<span class="d">' + d.getDate() + ' ' + MESI_BREVI[d.getMonth()].toLowerCase() + '</span>' +
+    '<span class="d">' + dataBreve(d) + '</span>' +
     '<span class="wd">' + GIORNI_LUNGHI[d.getDay()] + '</span></div>' +
-    '<div class="what"><div class="kind">' + esc(n.nome) + ' · ' + DOVE[n.formato] + '</div>' +
-    '<div class="ttl">' + esc(n.titolo) + '</div></div>' +
-    '<a class="btn btn-dark" href="#iscriviti" data-iscrivi="' + esc(n.data) + '">Riserva il tuo posto</a>';
+    '<div class="what"><div class="kind">' + esc(n.nome) + ' · ' + esc(luogoDi(n)) + (aperto ? '' : ' · Iscrizioni dal ' + dataBreve(dataApertura(n))) + '</div>' +
+    '<div class="ttl">' + esc(titoloDi(n)) + '</div></div>' +
+    (aperto ? '<a class="btn btn-dark" href="#iscriviti" data-iscrivi="' + esc(n.data) + '">Riserva il tuo posto</a>'
+            : '<a class="btn btn-dark" href="#iscriviti" data-avvisami="1">Avvisami</a>');
 }
 
+/* nel modulo compaiono solo gli incontri con le iscrizioni già aperte */
 function renderSelect() {
   var sel = document.getElementById('evento');
   var opts = '<option value="">Seleziona</option>';
   futuri.forEach(function (e) {
-    if (e.formato !== 'dinner' && e.formato !== 'show') opts += '<option value="' + esc(etichetta(e)) + '" data-d="' + esc(e.data) + '">' + esc(etichetta(e)) + '</option>';
+    if (iscrivibile(e)) opts += '<option value="' + esc(etichetta(e)) + '" data-d="' + esc(e.data) + '">' + esc(etichetta(e)) + '</option>';
   });
   opts += '<option value="Avvisami dei prossimi incontri">Avvisami dei prossimi incontri</option>';
   sel.innerHTML = opts;
@@ -1065,6 +1155,12 @@ document.addEventListener('click', function (ev) {
     var o = document.querySelector('#evento option[data-d="' + a.getAttribute('data-iscrivi') + '"]');
     if (o) o.selected = true;
   }
+  if (ev.target.closest('[data-avvisami]')) {
+    var av = document.querySelector('#evento option[value="Avvisami dei prossimi incontri"]');
+    if (av) av.selected = true;
+  }
+  var m = ev.target.closest('[data-mese]');
+  if (m && m.getAttribute('data-mese')) { meseScelto = m.getAttribute('data-mese'); renderCal(); }
   var p = ev.target.closest('[data-privacy]');
   if (p) { ev.preventDefault(); document.getElementById('privacy-dlg').showModal(); }
 });
@@ -1073,10 +1169,11 @@ document.querySelectorAll('.filters button').forEach(function (b) {
   b.addEventListener('click', function () {
     document.querySelectorAll('.filters button').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
     b.setAttribute('aria-pressed', 'true');
-    filtroAttivo = b.getAttribute('data-f'); mostraTutti = false;
+    filtroAttivo = b.getAttribute('data-f');
     renderCal();
   });
 });
+//@@CALENDARIO-FINE
 
 var burger = document.querySelector('.burger'), menu = document.getElementById('menu');
 burger.addEventListener('click', function () {
@@ -1094,9 +1191,9 @@ function datiPerConferma(dati, selEvento) {
   if (e) {
     var d = parseData(e.data);
     out.evNome = e.nome;
-    out.evTitolo = e.titolo;
+    out.evTitolo = titoloDi(e);
     out.evFormato = e.formato;
-    out.evDove = DOVE[e.formato];
+    out.evDove = luogoDi(e);
     out.evData = GIORNI_LUNGHI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()].toLowerCase() + ' ' + d.getFullYear();
     out.evDataBreve = d.getDate() + ' ' + MESI[d.getMonth()].toLowerCase();
   }
@@ -1173,7 +1270,7 @@ function renderTeam() {
     var foto = t.foto
       ? '<div class="tphoto has-img"><img src="' + esc(t.foto) + '" alt="' + esc(t.nome) + '" loading="lazy"></div>'
       : '<div class="tphoto" aria-hidden="true"><span class="ini">' + iniziali(t.nome) + '</span></div>';
-    var desc = t.descrizione ? '<p>' + esc(t.descrizione) + '</p>' : '<p class="soon">Presentazione in arrivo.</p>';
+    var desc = t.descrizione ? t.descrizione.split(/\n\s*\n/).map(function (par) { return '<p>' + esc(par) + '</p>'; }).join('') : '<p class="soon">Presentazione in arrivo.</p>';
     return '<article class="tcard">' + foto + '<div class="tbody"><h3>' + esc(t.nome) + '</h3><span class="role">' + t.ruolo.split(' · ').map(esc).join('<br>') + '</span>' + desc + '</div></article>';
   }).join('');
 }
